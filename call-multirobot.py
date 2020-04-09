@@ -6,7 +6,7 @@ MAX_AGENTS = 100
 MAX_SCEN = 26
 MAX_FAILED = 5
 
-code = "/Users/clarence/Desktop/try_multirobot" # path to code
+code = "/Users/clarence/Desktop/try-multirobot" # path to code
 cmap = "/Users/clarence/Desktop/multirobot/maps/warehouse-10-20-10-2-2.map" # path to map
 scen = "/Users/clarence/Desktop/multirobot/maps/warehouse-scen-even/warehouse-10-20-10-2-2-even-" # template path to scenarios
 
