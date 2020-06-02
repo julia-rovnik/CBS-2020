@@ -4,9 +4,9 @@ import subprocess
 
 path_to_bin = "try-multirobot" # path to the binary
 path_to_map = "brc202d.map" # path to the map
-paths_to_scen = ["brc202d-even-1",
-                 "brc202d-even-2",
-                 "brc202d-even-3"] # paths to scenarios
+paths_to_scen = ["brc202d-scen-even/brc202d-even-1.scen",
+                 "brc202d-scen-even/brc202d-even-2.scen",
+                 "brc202d-scen-even/brc202d-even-3.scen"] # paths to scenarios
 
 MAX_AGENTS = 10 # maximum number of agents
 MAX_SCEN = len(paths_to_scen) # maximum number of scenarios
@@ -20,6 +20,7 @@ prioritize_conflicts = "false" # true -> prioritize conflicts
 use_bypass = "false" # true -> use bypass
 use_ecbs = "false" # true -> use ecbs
 omega = "1.1" # suboptimality factor
+print_paths = "false" # true -> paths for each agent are shown, false -> only success rates are shown
 
 success_rates = [] # percent of passed tests for each number of agents
 failed = [0] * MAX_SCEN # for counting consecutive failures
@@ -31,7 +32,7 @@ for agents in range(1, MAX_AGENTS): # choose a number of agents
         if (failed[cur_scen] <= MAX_FAILED): # if the number of consecutive failures doesn't exceed MAX_FAILED
             # start the timer and create a subprocess
             timeStarted = time.time()
-            test = subprocess.Popen([path_to_bin, path_to_map, paths_to_scen[cur_scen], str(agents), dijkstra_precalc, use_CAT, heuristic, prioritize_conflicts, use_bypass, use_ecbs, omega])
+            test = subprocess.Popen([path_to_bin, path_to_map, paths_to_scen[cur_scen], str(agents), dijkstra_precalc, use_CAT, heuristic, prioritize_conflicts, use_bypass, use_ecbs, omega, print_paths])
 
             try:
                 test.wait(timeout = TIME_OUT)
