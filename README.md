@@ -22,6 +22,8 @@ use_ecbs = "false" # true -> использовать ecbs<br>
 omega = "1.1" # коэффициент субоптимальности<br>
 print_paths = "true" # true -> выводятся пути для каждого агента, false -> выводится только success rate<br>
 
+Скрипт работает так: для каждого количества агентов от левой границы до MAX_AGENTS, для каждого сценария из paths_to_scen от левой границы до MAX_SCEN, запустить исполняемый файл path_to_bin с данными параметрами. Если, например, текущее количество агентов равно 5, из каждого сценария выбираются первые 5 агентов. Success rate вычисляется как процент выполненных за TIME_OUT сценариев.
+
 Можно запустить исполняемый файл вручную с параметрами path_to_bin, path_to_map, path_to_scen, num_agents, dijkstra_precalc, use_CAT, heuristic, prioritize_conflicts, use_bypass, use_ecbs, omega, print_paths.
 
 Формат карты и файла со сценарием совпадает с форматом карт из этого репозитория https://movingai.com/benchmarks/mapf/index.html. Простая карта выглядит следующим образом:
