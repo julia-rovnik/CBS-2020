@@ -1,7 +1,28 @@
 # CBS-2020
 
-Программу можно запустить двумя способами: вручную или с помощью скрипта call-multirobot.py. На вход подается путь к файлу с картой, путь к файлу со сценарием, количество агентов и несколько других параметров (dijkstra_precalc, use_CAT, heuristic,
-prioritize_conflicts, use_bypass, use_ecbs, omega, print_paths). Эти параметры подробнее описаны в файле call-multirobot.py.
+Программу можно запустить двумя способами: вручную или с помощью скрипта call-multirobot.py. В скрипте call-multirobot.py можно настроить следующие параметры:
+
+path_to_bin = "try-multirobot" # путь к исполняемому файлу<br>
+path_to_map = "brc202d.map" # путь к файлу с картой<br>
+paths_to_scen = ["brc202d-even-1.scen",<br>
+                 "brc202d-even-2.scen",<br>
+                 "brc202d-even-3.scen"] # набор путей к файлам со сценариями<br>
+
+MAX_AGENTS = 50 # ограничение на количество агентов<br>
+MAX_SCEN = len(paths_to_scen) # ограничение на номер сценария<br>
+MAX_FAILED = 4 # ограничение на количество нерешенных задач<br>
+TIME_OUT = 30 # ограничение по времени<br><br>
+
+dijkstra_precalc = "true" # true -> использовать преподсчет с помощью алгоритма Dijkstra<br>
+use_CAT = "true" # true -> использовать Conflict Avoidance Table<br>
+heuristic = "normal" # эвристика (normal, number_of_conflicts, number_of_conflicting_agents, number_of_pairs, vertex_cover)<br>
+prioritize_conflicts = "false" # true -> использовать приоритизацию конфликтов<br>
+use_bypass = "false" # true -> использовать bypass<br>
+use_ecbs = "false" # true -> использовать ecbs<br>
+omega = "1.1" # коэффициент субоптимальности<br>
+print_paths = "true" # true -> выводятся пути для каждого агента, false -> выводится только success rate<br>
+
+Можно запустить исполняемый файл вручную с параметрами path_to_bin, path_to_map, path_to_scen, num_agents, dijkstra_precalc, use_CAT, heuristic, prioritize_conflicts, use_bypass, use_ecbs, omega, print_paths.
 
 Формат карты и файла со сценарием совпадает с форматом карт из этого репозитория https://movingai.com/benchmarks/mapf/index.html. Простая карта выглядит следующим образом:
 
@@ -15,8 +36,9 @@ map<br>
 
 На второй строчке указана высота карты, на третьей ширина карты, далее идет матрица из символов. Символы . и G обозначают пустую клетку, остальные - препятствие.
 
-Простой файл со сценариями выглядит так:
+Простой файл со сценариями выглядит следующим образом:
 
 version 1<br>
 1 1 5 5 0 1 2 1 2<br>
 1 1 5 5 1 0 1 2 2<br>
+
