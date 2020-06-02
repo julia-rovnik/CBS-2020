@@ -24,6 +24,16 @@ print_paths = "true" # true -> выводятся пути для каждого
 
 Скрипт работает так: для каждого количества агентов от левой границы до MAX_AGENTS, для каждого сценария из paths_to_scen от левой границы до MAX_SCEN, запустить исполняемый файл path_to_bin с данными параметрами. Если, например, текущее количество агентов равно 5, из каждого сценария выбираются первые 5 агентов. Success rate вычисляется как процент выполненных за TIME_OUT сценариев.
 
+Скрипт выдает следующую информацию:
+
+agents: 1 scenario: 0 time: 0.07509 result: SUCCESS<br>
+agents: 1 scenario: 1 time: 0.03795 result: SUCCESS<br>
+agents: 1 scenario: 2 time: 0.04000 result: SUCCESS<br>
+
+success rates for each number of agents: [100.0]<br>
+
+Количество агентов, номер сценария, время, результат работы - SUCCESS или FAILURE. После выполнения всех сценариев для текущего количетсва агентов выводится success rate.
+
 Можно запустить исполняемый файл вручную с параметрами path_to_bin, path_to_map, path_to_scen, num_agents, dijkstra_precalc, use_CAT, heuristic, prioritize_conflicts, use_bypass, use_ecbs, omega, print_paths.
 
 Формат карты и файла со сценарием совпадает с форматом карт из этого репозитория https://movingai.com/benchmarks/mapf/index.html. Простая карта выглядит следующим образом:
