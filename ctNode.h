@@ -17,7 +17,7 @@ typedef std::vector<std::set<std::pair<std::pair<int, int>, std::pair<int, int>>
 // структура для хранения путей (вектор пар i, j)
 typedef std::vector<std::pair<int, int>> Path;
 
-struct CTNode {
+class CTNode {
     public:
         std::vector<Path> paths;
         int cost;
