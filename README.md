@@ -11,7 +11,7 @@ paths_to_scen = ["brc202d-even-1.scen",<br>
 MAX_AGENTS = 50 # ограничение на количество агентов<br>
 MAX_SCEN = len(paths_to_scen) # ограничение на номер сценария<br>
 MAX_FAILED = 4 # ограничение на количество нерешенных задач<br>
-TIME_OUT = 30 # ограничение по времени<br><b
+TIME_OUT = 30 # ограничение по времени<br>
 
 dijkstra_precalc = "true" # true -> использовать преподсчет с помощью алгоритма Dijkstra<br>
 use_CAT = "true" # true -> использовать Conflict Avoidance Table<br>
