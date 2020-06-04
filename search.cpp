@@ -45,8 +45,12 @@ bool CompareAStar(const SearchNode& one, const SearchNode& two) {
     return one.f < two.f;
 }
 
-bool CompareDijkstra (const std::pair<double, SearchNode>& one, const std::pair<double, SearchNode>& two) {
+bool CompareDijkstra(const std::pair<double, SearchNode>& one, const std::pair<double, SearchNode>& two) {
     return one.first < two.first;
+}
+
+bool CompareFocal(const SearchNode& one, const SearchNode& two) {
+    return (one.confAgents).size() < (two.confAgents).size();
 }
 
 bool Search::checkVertexConstr(int i, int j, int t, VertexConstrStruct& vertexConstr) {
@@ -120,7 +124,7 @@ void Search::dijkstraPrecalc(Map& map, VertexConstrStruct& vertexConstr, EdgeCon
     }
 }
 
-void Search::startSearch(Map& map, VertexConstrStruct& vertexConstr, EdgeConstrStruct& edgeConstr, ConfMap& conflictAvoidanceTable, Agent& agent, std::vector<Path>& paths, bool useDijkstra, bool useFocal, double omega) {
+void Search::startSearch(Map& map, VertexConstrStruct& vertexConstr, EdgeConstrStruct& edgeConstr, ConfMap& conflictAvoidanceTable, Agent& agent, StateMap& states, bool useDijkstra, bool useFocal, double omega) {
     SearchNode startNode(agent.start_i, agent.start_j);
     SearchNode finNode(agent.fin_i, agent.fin_j);
 
@@ -150,67 +154,16 @@ void Search::startSearch(Map& map, VertexConstrStruct& vertexConstr, EdgeConstrS
         auto best = open.begin();
         SearchNode curNode = *best;
 
-        std::vector<SearchNode> focal;
-        double fmin = curNode.f;
-
         if (useFocal) {
-            // заполнили focal
+            double fmin = curNode.f;
+            std::set<SearchNode, bool(*)(const SearchNode&, const SearchNode&)> focal(&CompareFocal);
             for (auto elem: open) {
                 if (elem.f <= omega * fmin) {
-                    focal.push_back(elem);
+                    focal.insert(elem);
                 }
             }
-
-            // ищем лучшую вершину в focal
-            SearchNode bestFocal(0, 0);
-            int bestHC = 100000000;
-
-            for (auto elem: focal) {
-
-                // находим путь из SearchNodes
-                auto current = elem;
-                std::vector<SearchNode> focalPartPath;
-
-                while (current.parent != nullptr) {
-                    focalPartPath.push_back(current);
-                    current = *current.parent;
-                }
-                focalPartPath.push_back(current);
-                reverse(focalPartPath.begin(), focalPartPath.end());
-
-                // находим путь из координат
-                int ln = focalPartPath.size();
-                Path focalFullPath;
-                for (int node  = 0; node < ln; ++node) {
-                    if (node + 1 < ln) {
-                        for (int time = 0; time < focalPartPath[node + 1].t - focalPartPath[node].t; ++time) {
-                            focalFullPath.push_back({focalPartPath[node].i, focalPartPath[node].j});
-                        }
-                    } else {
-                        focalFullPath.push_back({focalPartPath[node].i, focalPartPath[node].j});
-                    }
-                }
-
-                // считаем эвристику
-                int hc = 0;
-                for (int i = 0; i < paths.size(); ++i) {
-                    int steps = std::min(paths[i].size(), focalFullPath.size());
-                    for (int j = 0; j < steps; ++j) {
-                        if (paths[i][j].first == focalFullPath[j].first && paths[i][j].second == focalFullPath[j].second) {
-                            ++hc;
-                            break;
-                        }
-                    }
-                }
-
-                // обновляем лучшую вершину
-                if (hc < bestHC) {
-                    bestHC = hc;
-                    bestFocal = elem;
-                }
-            }
-
-            curNode = bestFocal;
+            auto best = focal.begin();
+            curNode = *best;
         }
 
         if (curNode.i == finNode.i && curNode.j == finNode.j) {
@@ -238,6 +191,16 @@ void Search::startSearch(Map& map, VertexConstrStruct& vertexConstr, EdgeConstrS
                     scNode.f = scNode.g + scNode.h;
                     scNode.t = curNode.t + 1;
                     scNode.parent = &parents.back();
+                    scNode.confAgents = (&parents.back())->confAgents;
+
+                    KeyThree state = std::make_tuple(scNode.i, scNode.j, scNode.t);
+                    if (states.find(state) != states.end()) {
+                        for (auto elem : states[state]) {
+                            if (elem != agent.agentId) {
+                                (scNode.confAgents).insert(elem);
+                            }
+                        }
+                    }
 
                     if (curUseCAT) {
                         scNode.initCAT(conflictAvoidanceTable);

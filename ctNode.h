@@ -16,6 +16,8 @@ typedef std::vector<std::set<std::pair<int, int>>> VertexConstrStruct;
 typedef std::vector<std::set<std::pair<std::pair<int, int>, std::pair<int, int>>>> EdgeConstrStruct;
 // структура для хранения путей (вектор пар i, j)
 typedef std::vector<std::pair<int, int>> Path;
+// структура для хранения пар состояние - сет агентов, которые находились в нем
+typedef std::unordered_map<KeyThree, std::set<int>, KeyHash, KeyEqual> StateMap;
 
 class CTNode {
     public:
@@ -25,6 +27,7 @@ class CTNode {
         VertexConstrStruct vertexConstr;
         EdgeConstrStruct edgeConstr;
         ConfMap conflictAvoidanceTable;
+        StateMap stateAgentMap;
         bool** graph;
 
         CTNode();

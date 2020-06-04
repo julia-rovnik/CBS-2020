@@ -32,7 +32,7 @@ Path CTSolution::lowLevelSearch(CTNode node, int i) {
         search.dijkstraPrecalc(map, node.vertexConstr, node.edgeConstr, agents.allAgents[i]);
     }
 
-    search.startSearch(map, node.vertexConstr, node.edgeConstr, node.conflictAvoidanceTable, agents.allAgents[i], node.paths, useDijkstraPrecalc, useFocal, omega);
+    search.startSearch(map, node.vertexConstr, node.edgeConstr, node.conflictAvoidanceTable, agents.allAgents[i], node.stateAgentMap, useDijkstraPrecalc, useFocal, omega);
     return search.fullPath;
 }
 

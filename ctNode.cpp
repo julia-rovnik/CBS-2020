@@ -9,6 +9,7 @@ CTNode::CTNode() {
     vertexConstr = VertexConstrStruct(maxTime);
     edgeConstr = EdgeConstrStruct(maxTime);
     conflictAvoidanceTable = ConfMap();
+    stateAgentMap = StateMap();
 }
 
 bool CTNode::isCover(int V, int k, int E) { 
@@ -129,6 +130,7 @@ void CTNode::countCAT() {
                 } else {
                     conflictAvoidanceTable[state] = 1;
                 }
+                stateAgentMap[state].insert(i);
             }
         }
     }
